@@ -30,8 +30,8 @@ setup(
 	],
 
 	install_requires=[
-		"requests>=2.27.1",
-		"pydantic>=1.9.0"
+		"requests",
+		"pydantic"
 	],
 
 	classifiers=[
