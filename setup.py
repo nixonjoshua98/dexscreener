@@ -5,14 +5,16 @@ def read_file(file):
 	with open(file, "r") as fh:
 		return fh.read()
 
+# py -m build
+# py -m twine upload dist/*
 
 setup(
 	name="dexscreener",
 	packages=find_packages(),
-	version="0.0.11",
+	version="0.0.1",
 	license="MIT",
 
-	description="Query the dexscreener.com site",
+	description="Python wrapper for the 'dexscreener.com' API",
 	long_description=read_file("README.md"),
 	long_description_content_type="text/markdown",
 
@@ -31,7 +33,8 @@ setup(
 
 	install_requires=[
 		"requests",
-		"pydantic"
+		"pydantic",
+		"certifi"
 	],
 
 	classifiers=[
