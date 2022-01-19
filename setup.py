@@ -30,7 +30,10 @@ setup(
 		"cryptocurrency"
 	],
 
-	install_requires=read_file("requirements.txt").splitlines(),
+	install_requires=[
+		"requests>=2.27.1",
+		"pydantic>=1.9.0"
+	],
 
 	classifiers=[
 		"Programming Language :: Python :: 3",
