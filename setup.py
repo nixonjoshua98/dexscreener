@@ -5,12 +5,11 @@ def read_file(file):
 	with open(file, "r") as fh:
 		return fh.read()
 
-VERSION = "0.0.1"
 
 setup(
 	name="dexscreener",
 	packages=find_packages(),
-	version=VERSION,
+	version="0.0.11",
 	license="MIT",
 
 	description="Query the dexscreener.com site",
@@ -22,7 +21,7 @@ setup(
 
 	url="https://github.com/nixonjoshua98/dexscreener",
 
-	download_url=f"https://github.com/nixonjoshua98/dexscreener/archive/{VERSION}.tar.gz",
+	download_url="https://github.com/nixonjoshua98/dexscreener/archive/refs/tags/0.0.1.tar.gz",
 
 	keywords=[
 		"dexscreener",
