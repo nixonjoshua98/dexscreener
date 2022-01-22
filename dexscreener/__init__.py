@@ -1,2 +1,2 @@
-from .client import DexscreenerClient
-from .models import TradeHistoryResponseModel, TradeHistoryEntryModel
+from .clients import DexscreenerClient
+from .models import TradeHistoryEntryModel, TradeHistoryResponseModel

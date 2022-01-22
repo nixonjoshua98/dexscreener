@@ -1,4 +1,4 @@
-from setuptools import setup, find_packages
+from setuptools import find_packages, setup
 
 
 def read_file(file):
@@ -8,10 +8,11 @@ def read_file(file):
 # py -m build
 # py -m twine upload dist/*
 
+
 setup(
 	name="dexscreener",
 	packages=find_packages(),
-	version="0.0.1",
+	version="0.0.2",
 	license="MIT",
 
 	description="Python wrapper for the 'dexscreener.com' API",
@@ -23,7 +24,7 @@ setup(
 
 	url="https://github.com/nixonjoshua98/dexscreener",
 
-	download_url="https://github.com/nixonjoshua98/dexscreener/archive/refs/tags/0.0.1.tar.gz",
+	download_url="https://github.com/nixonjoshua98/dexscreener/archive/refs/tags/0.0.2.tar.gz",
 
 	keywords=[
 		"dexscreener",
