@@ -1,6 +1,8 @@
 # Python Wrapper for 'dexscreener.com'
 ###### Pull requests GREATLY encouraged!
 
+[![Downloads](https://pepy.tech/badge/dexscreener)](https://pepy.tech/project/dexscreener)
+
 ```python
 import datetime as dt
 
