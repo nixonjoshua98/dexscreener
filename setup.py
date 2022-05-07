@@ -12,7 +12,7 @@ def read_file(file):
 setup(
 	name="dexscreener",
 	packages=find_packages(),
-	version="0.1",
+	version="0.2",
 	license="MIT",
 
 	description="Python wrapper for the 'dexscreener.com' API",
@@ -29,7 +29,8 @@ setup(
 	keywords=[
 		"dexscreener",
 		"crypto",
-		"cryptocurrency"
+		"cryptocurrency",
+		"bitcoin"
 	],
 
 	install_requires=[

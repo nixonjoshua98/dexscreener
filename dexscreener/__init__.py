@@ -1,2 +1,2 @@
 from .client import DexscreenerClient
-from .models import (TradeHistoryEntryModel, TradeHistoryResponseModel, TokenPair)
+from .models import TokenPair

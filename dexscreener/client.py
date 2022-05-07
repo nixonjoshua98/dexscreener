@@ -1,14 +1,10 @@
 import datetime as dt
-from typing import Optional, Union
+from typing import Union
 
 import requests
 
-from .models import (ChartBarsResponseModel,
-                     TradeHistoryResponseModel, TokenPair)
+from .models import TokenPair
 from .ratelimit import RateLimiter
-
-HISTORY_URL = "https://io6.dexscreener.io/u/trading-history/recent/{network}/{address}"
-CHART_BAR_URL = "https://io5.dexscreener.io/u/chart/bars/{network}/{address}?{daterange}&res=15&cb=2"
 
 
 class BaseClient:
@@ -22,10 +18,6 @@ class BaseClient:
             r = requests.request(method, url, **kwargs)
 
             return r.json()
-
-    @staticmethod
-    def _create_daterange_string(from_: dt.datetime, to: dt.datetime):
-        return f"from={int(from_.timestamp() * 1_000)}&to={int(to.timestamp() * 1_000)}"
 
 
 class DexscreenerClient(BaseClient):
@@ -77,50 +69,3 @@ class DexscreenerClient(BaseClient):
         resp = self.request("GET", url)
 
         return [TokenPair.parse_obj(pair) for pair in resp["pairs"]]
-
-    def chart_bars(
-        self,
-        network: str,
-        address: str,
-        from_: dt.datetime,
-        to: dt.datetime
-    ) -> Optional[ChartBarsResponseModel]:
-        """
-        Fetch data from the 'chart/bars/' endpoint
-
-        :param network: Network name as it appears in the URL
-        :param address: Pair address
-        :param from_: Start date for the chart bars
-        :param to: End date for the chart bars
-
-        :return:
-            Return the response model
-        """
-        url = CHART_BAR_URL.format(
-            network=network,
-            address=address,
-            daterange=self._create_daterange_string(from_, to)
-        )
-
-        resp = self.request("GET", url)
-
-        return ChartBarsResponseModel.parse_obj(resp)
-
-    def recent_trade_history(self, network: str, address: str) -> Optional[TradeHistoryResponseModel]:
-        """
-        Fetch data from the 'trading-history/recent/' endpoint
-
-        :param network: Network name as it appears in the URL
-        :param address: Pair address
-
-        :return:
-            Return the response model
-        """
-        url = HISTORY_URL.format(
-            network=network,
-            address=address
-        )
-
-        resp = self.request("GET", url)
-
-        return TradeHistoryResponseModel.parse_obj(resp)

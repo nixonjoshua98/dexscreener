@@ -1,5 +1,4 @@
 import time
-import functools
 import threading
 import collections
 
@@ -10,17 +9,10 @@ class RateLimiter:
 
         self.period = period
         self.max_calls = max_calls
-        self._lock = threading.Lock()
-
-    def __call__(self, f):
-        @functools.wraps(f)
-        def wrapped(*args, **kwargs):
-            with self:
-                return f(*args, **kwargs)
-        return wrapped
+        self.lock = threading.Lock()
 
     def __enter__(self):
-        with self._lock:
+        with self.lock:
             if len(self.calls) >= self.max_calls:
                 until = time.time() + self.period - self._timespan
                 sleeptime = until - time.time()
@@ -29,7 +21,7 @@ class RateLimiter:
             return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
-        with self._lock:
+        with self.lock:
             self.calls.append(time.time())
 
             while self._timespan >= self.period:
