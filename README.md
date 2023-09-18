@@ -1,11 +1,14 @@
-# Python Wrapper for 'dexscreener.com'
+# API Wrapper for [Dexscreener.com](https://docs.dexscreener.com/)
+
 ###### Pull requests GREATLY encouraged!
 
+[![Downloads](https://static.pepy.tech/badge/dexscreener/week)](https://pepy.tech/project/dexscreener)
+[![Downloads](https://static.pepy.tech/badge/dexscreener/month)](https://pepy.tech/project/dexscreener)
 [![Downloads](https://pepy.tech/badge/dexscreener)](https://pepy.tech/project/dexscreener)
 
-```python
-import datetime as dt
+# Quick Start
 
+```python
 from dexscreener import DexscreenerClient
 
 client = DexscreenerClient()

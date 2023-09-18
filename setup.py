@@ -12,7 +12,7 @@ def read_file(file):
 setup(
 	name="dexscreener",
 	packages=find_packages(),
-	version="0.2",
+	version="0.3",
 	license="MIT",
 
 	description="Python wrapper for the 'dexscreener.com' API",
@@ -36,7 +36,8 @@ setup(
 	install_requires=[
 		"requests",
 		"pydantic",
-		"certifi"
+		"certifi",
+		"aiohttp"
 	],
 
 	classifiers=[

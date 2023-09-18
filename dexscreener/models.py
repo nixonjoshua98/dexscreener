@@ -3,20 +3,9 @@ from typing import Optional
 import datetime as dt
 
 
-class TimestampDatetime:
-
-    @classmethod
-    def __get_validators__(cls):
-        yield lambda val: dt.datetime.utcfromtimestamp(val / 1000.0) if val is not None else val
-
-
 class BaseToken(BaseModel):
     address: str
     name: str
-    symbol: str
-
-
-class QuoteToken(BaseModel):
     symbol: str
 
 
@@ -56,10 +45,10 @@ class Liquidity(BaseModel):
 class TokenPair(BaseModel):
     chain_id: str = Field(..., alias="chainId")
     dex_id: str = Field(..., alias="dexId")
-    url: str
+    url: str = Field(...)
     pair_address: str = Field(..., alias="pairAddress")
     base_token: BaseToken = Field(..., alias="baseToken")
-    quote_token: QuoteToken = Field(..., alias="quoteToken")
+    quote_token: BaseToken = Field(..., alias="quoteToken")
     price_native: float = Field(..., alias="priceNative")
     price_usd: Optional[float] = Field(None, alias="priceUsd")
     transactions: PairTransactionCounts = Field(..., alias="txns")
@@ -67,4 +56,4 @@ class TokenPair(BaseModel):
     price_change: PriceChangePeriods = Field(..., alias="priceChange")
     liquidity: Optional[Liquidity] = None
     fdv: Optional[float] = 0.0
-    pair_created_at: Optional[TimestampDatetime] = Field(None, alias="pairCreatedAt")
+    pair_created_at: Optional[dt.datetime] = Field(None, alias="pairCreatedAt")
