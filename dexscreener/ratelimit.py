@@ -14,15 +14,6 @@ class RateLimiter:
         self.sync_lock = threading.Lock()
         self.async_lock = asyncio.Lock()
 
-    async def __aenter__(self):
-        async with self.async_lock:
-            sleep_time = self.get_sleep_time()
-
-            if sleep_time > 0:
-                await asyncio.sleep(sleep_time)
-
-            return self
-
     def __enter__(self):
         with self.sync_lock:
             sleep_time = self.get_sleep_time()
@@ -33,11 +24,20 @@ class RateLimiter:
             return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
-        with self.async_lock:
+        with self.sync_lock:
             self._clear_calls()
 
+    async def __aenter__(self):
+        async with self.async_lock:
+            sleep_time = self.get_sleep_time()
+
+            if sleep_time > 0:
+                await asyncio.sleep(sleep_time)
+
+            return self
+
     async def __aexit__(self, exc_type, exc_val, exc_tb):
-        async with self.sync_lock:
+        async with self.async_lock:
             self._clear_calls()
 
     def get_sleep_time(self) -> float:

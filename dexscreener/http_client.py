@@ -25,7 +25,8 @@ class HttpClient:
     async def request_async(self, method, url, **kwargs):
         url = self._create_absolute_url(url)
 
-        async with aiohttp.ClientSession() as session:
-            async with session.request(method, url, **kwargs) as response:
-                return await response.json()
+        async with self._limiter:
+            async with aiohttp.ClientSession() as session:
+                async with session.request(method, url, **kwargs) as response:
+                    return await response.json()
 
