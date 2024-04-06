@@ -20,7 +20,7 @@ setup(
 	long_description_content_type="text/markdown",
 
 	author="Joshua Nixon",
-	author_email="joshuanixonofficial@gmail.com",
+	author_email="nixonjoshua98@gmail.com",
 
 	url="https://github.com/nixonjoshua98/dexscreener",
 
