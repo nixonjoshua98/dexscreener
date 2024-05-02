@@ -18,16 +18,20 @@ class DexscreenerClient:
             Response as TokenPair model
         """
         resp = self._client.request("GET", f"dex/pairs/{chain}/{address}")
-
-        return TokenPair(**resp["pair"])
+        if resp["pair"]:
+            return TokenPair(**resp["pair"])
+        else:
+            pass #returns None for now but owner might want to raise Error
 
     async def get_token_pair_async(self, chain: str, address: str) -> TokenPair:
         """
         Async version of `get_token_pair`
         """
         resp = await self._client.request_async("GET", f"dex/pairs/{chain}/{address}")
-
-        return TokenPair(**resp["pair"])
+        if resp["pair"]:
+            return TokenPair(**resp["pair"])
+        else:
+            pass
 
     def get_token_pairs(self, address: str) -> list[TokenPair]:
         """
