@@ -1,12 +1,12 @@
 from .models import TokenPair
 from .http_client import HttpClient
-
+from typing import Optional
 
 class DexscreenerClient:
     def __init__(self):
         self._client: HttpClient = HttpClient(100, 60)
 
-    def get_token_pair(self, chain: str, address: str) -> TokenPair:
+    def get_token_pair(self, chain: str, address: str) -> Optional[TokenPair]:
         """
         Fetch a pair on the provided chain id
 
@@ -23,7 +23,7 @@ class DexscreenerClient:
         else:
             pass #returns None for now but owner might want to raise Error
 
-    async def get_token_pair_async(self, chain: str, address: str) -> TokenPair:
+    async def get_token_pair_async(self, chain: str, address: str) -> Optional[TokenPair]:
         """
         Async version of `get_token_pair`
         """
