@@ -1,12 +1,12 @@
 from .models import TokenPair
 from .http_client import HttpClient
-
+from typing import Optional
 
 class DexscreenerClient:
     def __init__(self):
         self._client: HttpClient = HttpClient(100, 60)
 
-    def get_token_pair(self, chain: str, address: str) -> TokenPair:
+    def get_token_pair(self, chain: str, address: str) -> Optional[TokenPair]:
         """
         Fetch a pair on the provided chain id
 
@@ -18,16 +18,20 @@ class DexscreenerClient:
             Response as TokenPair model
         """
         resp = self._client.request("GET", f"dex/pairs/{chain}/{address}")
+        if resp["pair"]:
+            return TokenPair(**resp["pair"])
+        else:
+            pass #returns None for now but owner might want to raise Error
 
-        return TokenPair(**resp["pair"])
-
-    async def get_token_pair_async(self, chain: str, address: str) -> TokenPair:
+    async def get_token_pair_async(self, chain: str, address: str) -> Optional[TokenPair]:
         """
         Async version of `get_token_pair`
         """
         resp = await self._client.request_async("GET", f"dex/pairs/{chain}/{address}")
-
-        return TokenPair(**resp["pair"])
+        if resp["pair"]:
+            return TokenPair(**resp["pair"])
+        else:
+            pass
 
     def get_token_pairs(self, address: str) -> list[TokenPair]:
         """
@@ -40,16 +44,22 @@ class DexscreenerClient:
             Response as list of TokenPair model
         """
         resp = self._client.request("GET",  f"dex/tokens/{address}")
-
-        return [TokenPair(**pair) for pair in resp["pairs"]]
+        
+        if resp["pairs"]:
+            return [TokenPair(**pair) for pair in resp["pairs"]]
+        else:
+            return []
 
     async def get_token_pairs_async(self, address: str) -> list[TokenPair]:
         """
         Async version of `get_token_pairs`
         """
         resp = await self._client.request_async("GET", f"dex/tokens/{address}")
-
-        return [TokenPair(**pair) for pair in resp["pairs"]]
+        
+        if resp["pairs"]:        
+            return [TokenPair(**pair) for pair in resp["pairs"]]
+        else:
+            return []
 
     def search_pairs(self, search_query: str) -> list[TokenPair]:
         """
@@ -62,13 +72,19 @@ class DexscreenerClient:
             Response as list of TokenPair model
         """
         resp = self._client.request("GET", f"dex/search/?q={search_query}")
-
-        return [TokenPair(**pair) for pair in resp["pairs"]]
+        
+        if resp["pairs"]:
+            return [TokenPair(**pair) for pair in resp["pairs"]]
+        else:
+            return []
 
     async def search_pairs_async(self, search_query: str) -> list[TokenPair]:
         """
         Async version of `search_pairs`
         """
         resp = await self._client.request_async("GET", f"dex/search/?q={search_query}")
-
-        return [TokenPair(**pair) for pair in resp["pairs"]]
+        
+        if resp["pairs"]:
+            return [TokenPair(**pair) for pair in resp["pairs"]]
+        else:
+            return []
