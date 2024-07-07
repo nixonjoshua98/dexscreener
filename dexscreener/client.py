@@ -1,6 +1,6 @@
 from .models import TokenPair
 from .http_client import HttpClient
-from typing import Optional
+from typing import Optional, Iterable, List
 
 class DexscreenerClient:
     def __init__(self):
@@ -27,6 +27,33 @@ class DexscreenerClient:
         resp = await self._client.request_async("GET", f"dex/pairs/{chain}/{address}")        
         return TokenPair(**resp["pair"]) if resp["pair"] else None
 
+    def get_token_pair_list(self, chain: str, addresses: Iterable[str]) -> List[TokenPair]:
+        """
+        Fetch multiple pairs on the provided chain id
+
+        https://api.dexscreener.com/latest/dex/pairs/ethereum/0xC2aDdA861F89bBB333c90c492cB837741916A225,0x7BeA39867e4169DBe237d55C8242a8f2fcDcc387
+        
+        :param chain: Chain id
+        :param addresses: Iterable of token addresses (up to 30)
+        :return:
+            Response as list of TokenPair models
+        """
+        addresses_list = list(addresses)
+        if len(addresses_list) > 30:
+            raise ValueError("The maximum number of addresses allowed is 30.")
+        resp = self._client.request("GET", f"dex/pairs/{chain}/{','.join(addresses_list)}")
+        return [TokenPair(**pair) for pair in resp.get("pairs", [])]
+
+    async def get_token_pair_list_async(self, chain: str, addresses: Iterable[str]) -> List[TokenPair]:
+        """
+        Async version of `get_token_pairs`
+        """
+        addresses_list = list(addresses)
+        if len(addresses_list) > 30:
+            raise ValueError("The maximum number of addresses allowed is 30.")
+        resp = await self._client.request_async("GET", f"dex/pairs/{chain}/{','.join(addresses_list)}")
+        return [TokenPair(**pair) for pair in resp.get("pairs", [])]    
+    
     def get_token_pairs(self, address: str) -> list[TokenPair]:
         """
         Get pairs matching base token address
