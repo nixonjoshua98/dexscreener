@@ -96,7 +96,7 @@ class DexscreenerClient:
         return [TokenPair(**pair) for pair in resp.get("pairs", [])]
 
 
-class DexscreenerV1Client:
+class DexscreenerClientV1:
     def __init__(self) -> None:
         self._client_60rpm: HttpClient = HttpClient(60, 60, base_url="https://api.dexscreener.com")
         self._client_300rpm: HttpClient = HttpClient(300, 60, base_url="https://api.dexscreener.com/latest")

@@ -1,4 +1,4 @@
-from dexscreener import DexscreenerClient, DexscreenerV1Client
+from dexscreener import DexscreenerClient, DexscreenerClientV1
 import asyncio
 
 async def main():
@@ -15,7 +15,7 @@ async def main():
 
     search = await client.search_pairs_async("WBTC")
 
-    client_v1 = DexscreenerV1Client()
+    client_v1 = DexscreenerClientV1()
 
     token_profiles = client_v1.get_latest_token_profiles()
 

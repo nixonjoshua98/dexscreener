@@ -1,2 +1,2 @@
-from .client import DexscreenerClient, DexscreenerV1Client
+from .client import DexscreenerClient, DexscreenerClientV1
 from .models import TokenPair
