@@ -6,11 +6,10 @@ from .ratelimit import RateLimiter
 
 
 class HttpClient:
-    base_url = "https://api.dexscreener.io/latest"
-
-    def __init__(self, calls: int, period: int):
+    def __init__(self, calls: int, period: int, base_url: str = "https://api.dexscreener.io/latest"):
         self._limiter = RateLimiter(calls, period)
-
+        self.base_url = base_url
+        
     def _create_absolute_url(self, relative: str) -> str:
         return f"{self.base_url}/{relative}"
 
