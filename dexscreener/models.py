@@ -60,9 +60,9 @@ class TokenPair(BaseModel):
 
 
 class TokenLink(BaseModel):
-    type: str|None = None
-    label: str|None = None
-    url: str|None = None
+    type: Optional[str] = None
+    label: Optional[str] = None
+    url: Optional[str] = None
 
 
 class TokenInfo(BaseModel):
@@ -71,9 +71,9 @@ class TokenInfo(BaseModel):
     token_address: str = Field(..., alias="tokenAddress")
     amount: float = 0.0 # Not sure if this is the best logic
     total_amount: float = Field(0.0, alias="totalAmount")
-    icon: str|None = None
-    header: str|None = None
-    description: str|None = None
+    icon: Optional[str] = None
+    header: Optional[str] = None
+    description: Optional[str] = None
     links: list[TokenLink] = []
 
 
