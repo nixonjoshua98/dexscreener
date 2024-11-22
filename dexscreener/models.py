@@ -57,3 +57,27 @@ class TokenPair(BaseModel):
     liquidity: Optional[Liquidity] = None
     fdv: Optional[float] = 0.0
     pair_created_at: Optional[dt.datetime] = Field(None, alias="pairCreatedAt")
+
+
+class TokenLink(BaseModel):
+    type: Optional[str] = None
+    label: Optional[str] = None
+    url: Optional[str] = None
+
+
+class TokenInfo(BaseModel):
+    url: str
+    chain_id: str = Field(..., alias="chainId")
+    token_address: str = Field(..., alias="tokenAddress")
+    amount: float = 0.0 # Not sure if this is the best logic
+    total_amount: float = Field(0.0, alias="totalAmount")
+    icon: Optional[str] = None
+    header: Optional[str] = None
+    description: Optional[str] = None
+    links: list[TokenLink] = []
+
+
+class OrderInfo(BaseModel):
+    type: str
+    status: str
+    payment_timestamp: int = Field(..., alias="paymentTimestamp")
