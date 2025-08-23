@@ -178,4 +178,14 @@ class DexscreenerClient:
         Get token information for multiple tokens by chain and addresses
         https://api.dexscreener.com/tokens/v1/{chainId}/{tokenAddresses}
         """
-        pass
+        if len(token_addresses) > 30:
+            raise ValueError("The maximum number of addresses allowed is 30.")
+
+        csv_addresses = ",".join(token_addresses)
+
+        # NOTE: this endpoint supports 300rpm however this is is not implemented, see: https://docs.dexscreener.com/api/reference#get-tokens-v1-chainid-tokenaddresses
+        # TODO: Implement 300rpm
+        resp = self._client_60rpm.request(
+            "GET", f"tokens/v1/{chain_id}/{csv_addresses}"
+        )
+        print(resp)
