@@ -172,3 +172,10 @@ class DexscreenerClient:
         """
         resp = await self._client_300rpm.request_async("GET", f"dex/search/?q={search_query}")        
         return [TokenPair(**pair) for pair in resp.get("pairs", [])]
+
+    def get_tokens_info(self, chain_id: str, token_addresses: Iterable[str]):
+        """
+        Get token information for multiple tokens by chain and addresses
+        https://api.dexscreener.com/tokens/v1/{chainId}/{tokenAddresses}
+        """
+        pass
