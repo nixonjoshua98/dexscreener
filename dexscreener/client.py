@@ -173,19 +173,38 @@ class DexscreenerClient:
         resp = await self._client_300rpm.request_async("GET", f"dex/search/?q={search_query}")        
         return [TokenPair(**pair) for pair in resp.get("pairs", [])]
 
-    def get_tokens_info(self, chain_id: str, token_addresses: Iterable[str]):
+    def get_tokens_info(
+        self, chain_id: str, token_list: Iterable[str]
+    ) -> list[TokenPair]:
         """
         Get token information for multiple tokens by chain and addresses
         https://api.dexscreener.com/tokens/v1/{chainId}/{tokenAddresses}
         """
-        if len(token_addresses) > 30:
+        token_list_list = list(token_list)
+        if len(token_list_list) > 30:
             raise ValueError("The maximum number of addresses allowed is 30.")
 
-        csv_addresses = ",".join(token_addresses)
+        csv_addresses = ",".join(token_list_list)  # TODO: improve validation
 
         # NOTE: this endpoint supports 300rpm however this is is not implemented, see: https://docs.dexscreener.com/api/reference#get-tokens-v1-chainid-tokenaddresses
         # TODO: Implement 300rpm
         resp = self._client_60rpm.request(
             "GET", f"tokens/v1/{chain_id}/{csv_addresses}"
         )
-        print(resp)
+        return [TokenPair(**pair) for pair in resp]
+
+    async def get_tokens_info_async(
+        self, chain_id: str, token_list: Iterable[str]
+    ) -> list[TokenPair]:
+        """
+        Async version of `get_tokens_info`
+        """
+        token_list_list = list(token_list)
+        if len(token_list_list) > 30:
+            raise ValueError("The maximum number of addresses allowed is 30.")
+
+        csv_addresses = ",".join(token_list_list)
+        resp = await self._client_60rpm.request_async(
+            "GET", f"tokens/v1/{chain_id}/{csv_addresses}"
+        )
+        return [TokenPair(**pair) for pair in resp]
