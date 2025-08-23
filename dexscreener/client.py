@@ -173,12 +173,16 @@ class DexscreenerClient:
         resp = await self._client_300rpm.request_async("GET", f"dex/search/?q={search_query}")        
         return [TokenPair(**pair) for pair in resp.get("pairs", [])]
 
-    def get_tokens_info(
+    def get_pairs_by_token_addresses(
         self, chain_id: str, token_list: Iterable[str]
     ) -> list[TokenPair]:
         """
         Get token information for multiple tokens by chain and addresses
-        https://api.dexscreener.com/tokens/v1/{chainId}/{tokenAddresses}
+
+        :param chain_id: Chain id eg: solana
+        :param token_list: Iterable of token addresses (up to 30) eg: [0x2170Ed0880ac9A755fd29B2688956BD959F933F8, 0x7BeA39867e4169DBe237d55C8242a8f2fcDcc387]
+        :return:
+            Response as list of TokenPair model
         """
         token_list_list = list(token_list)
         if len(token_list_list) > 30:
@@ -193,11 +197,16 @@ class DexscreenerClient:
         )
         return [TokenPair(**pair) for pair in resp]
 
-    async def get_tokens_info_async(
+    async def get_pairs_by_token_addresses_async(
         self, chain_id: str, token_list: Iterable[str]
     ) -> list[TokenPair]:
         """
-        Async version of `get_tokens_info`
+        Async version of `get_pairs_by_token_addresses`
+
+        :param chain_id: Chain id eg: solana
+        :param token_list: Iterable of token addresses (up to 30) eg: [0x2170Ed0880ac9A755fd29B2688956BD959F933F8, 0x7BeA39867e4169DBe237d55C8242a8f2fcDcc387]
+        :return:
+            Response as list of TokenPair model
         """
         token_list_list = list(token_list)
         if len(token_list_list) > 30:
