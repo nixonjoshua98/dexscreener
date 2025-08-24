@@ -1,7 +1,7 @@
-from .models import TokenPair, TokenInfo, OrderInfo
+from typing import Iterable, List, Optional
+
 from .http_client import HttpClient
-from typing import Optional, Iterable, List
-import json
+from .models import OrderInfo, TokenInfo, TokenPair
 
 
 class DexscreenerClient:
