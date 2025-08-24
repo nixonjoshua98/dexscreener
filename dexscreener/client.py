@@ -5,9 +5,16 @@ import json
 
 
 class DexscreenerClient:
+    BASE_URL = "https://api.dexscreener.com"
+
     def __init__(self) -> None:
-        self._client_60rpm: HttpClient = HttpClient(60, 60, base_url="https://api.dexscreener.com")
-        self._client_300rpm: HttpClient = HttpClient(300, 60, base_url="https://api.dexscreener.com/latest")
+        self._client_60rpm: HttpClient = HttpClient(60, 60, base_url=self.BASE_URL)
+        self._client_300rpm_root: HttpClient = HttpClient(
+            300, 60, base_url=self.BASE_URL
+        )
+        self._client_300rpm: HttpClient = HttpClient(
+            300, 60, base_url=f"{self.BASE_URL}/latest"
+        )
 
     def get_latest_token_profiles(self) -> list[TokenInfo]:
         """
@@ -190,9 +197,7 @@ class DexscreenerClient:
 
         csv_addresses = ",".join(token_list_list)  # TODO: improve validation
 
-        # NOTE: this endpoint supports 300rpm however this is is not implemented, see: https://docs.dexscreener.com/api/reference#get-tokens-v1-chainid-tokenaddresses
-        # TODO: Implement 300rpm
-        resp = self._client_60rpm.request(
+        resp = self._client_300rpm_root.request(
             "GET", f"tokens/v1/{chain_id}/{csv_addresses}"
         )
         return [TokenPair(**pair) for pair in resp]
@@ -213,7 +218,7 @@ class DexscreenerClient:
             raise ValueError("The maximum number of addresses allowed is 30.")
 
         csv_addresses = ",".join(token_list_list)
-        resp = await self._client_60rpm.request_async(
+        resp = await self._client_300rpm_root.request_async(
             "GET", f"tokens/v1/{chain_id}/{csv_addresses}"
         )
         return [TokenPair(**pair) for pair in resp]
@@ -229,7 +234,7 @@ class DexscreenerClient:
         :return:
             Response as list of TokenPair model
         """
-        resp = self._client_60rpm.request(
+        resp = self._client_300rpm_root.request(
             "GET", f"token-pairs/v1/{chain_id}/{token_address}"
         )
         return [TokenPair(**pair) for pair in resp]
@@ -240,7 +245,7 @@ class DexscreenerClient:
         """
         Async version of `get_token_pairs_v1`
         """
-        resp = await self._client_60rpm.request_async(
+        resp = await self._client_300rpm_root.request_async(
             "GET", f"token-pairs/v1/{chain_id}/{token_address}"
         )
         return [TokenPair(**pair) for pair in resp]
