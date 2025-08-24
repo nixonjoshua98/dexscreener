@@ -217,3 +217,30 @@ class DexscreenerClient:
             "GET", f"tokens/v1/{chain_id}/{csv_addresses}"
         )
         return [TokenPair(**pair) for pair in resp]
+
+    def get_token_pairs_v1(self, chain_id: str, token_address: str) -> list[TokenPair]:
+        """
+        Get token pairs by token address
+
+        https://api.dexscreener.com/token-pairs/v1/{chainId}/{tokenAddress}
+
+        :param chain_id: Chain id eg: solana
+        :param token_address: Token address eg: JUPyiwrYJFskUPiHa7hkeR8VUtAeFoSYbKedZNsDvCN
+        :return:
+            Response as list of TokenPair model
+        """
+        resp = self._client_60rpm.request(
+            "GET", f"token-pairs/v1/{chain_id}/{token_address}"
+        )
+        return [TokenPair(**pair) for pair in resp]
+
+    async def get_token_pairs_v1_async(
+        self, chain_id: str, token_address: str
+    ) -> list[TokenPair]:
+        """
+        Async version of `get_token_pairs_v1`
+        """
+        resp = await self._client_60rpm.request_async(
+            "GET", f"token-pairs/v1/{chain_id}/{token_address}"
+        )
+        return [TokenPair(**pair) for pair in resp]
