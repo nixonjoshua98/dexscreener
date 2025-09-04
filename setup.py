@@ -5,6 +5,7 @@ def read_file(file):
 	with open(file, "r") as fh:
 		return fh.read()
 
+# pip install build twine
 # py -m build
 # py -m twine upload dist/*
 
@@ -12,7 +13,7 @@ def read_file(file):
 setup(
 	name="dexscreener",
 	packages=find_packages(),
-	version="1.1",
+	version="1.3",
 	license="MIT",
 
 	description="Python wrapper for the 'dexscreener.com' API",

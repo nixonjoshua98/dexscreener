@@ -13,11 +13,13 @@ async def main():
     most_active_tokens = client.get_tokens_most_active()
 
     paid_of_orders = client.get_orders_paid_of_token(
-        "solana", "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v"
+        "solana",
+        "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v"
     )
 
     pair = await client.get_token_pair_async(
-        "harmony", "0xcd818813f038a4d1a27c84d24d74bbc21551fa83"
+        "harmony",
+        "0xcd818813f038a4d1a27c84d24d74bbc21551fa83"
     )
 
     pairs = await client.get_token_pairs_async(
@@ -35,7 +37,8 @@ async def main():
     search = await client.search_pairs_async("WBTC")
 
     pairs = await client.get_token_pairs_v1_async(
-        "solana", "JUPyiwrYJFskUPiHa7hkeR8VUtAeFoSYbKedZNsDvCN"
+        "solana",
+        "JUPyiwrYJFskUPiHa7hkeR8VUtAeFoSYbKedZNsDvCN"
     )
 
     search = await client.get_pairs_by_token_addresses_async(
@@ -43,5 +46,4 @@ async def main():
         ("JUPyiwrYJFskUPiHa7hkeR8VUtAeFoSYbKedZNsDvCN",),
     )
 
-
-asyncio.get_event_loop().run_until_complete(main())
+asyncio.new_event_loop().run_until_complete(main())

@@ -2,6 +2,8 @@
 
 ###### Pull requests GREATLY encouraged!
 
+__For a more modern and updated API client, please use the new [dexscreen](https://github.com/solanab/dexscreen) package__
+
 [![Downloads](https://static.pepy.tech/badge/dexscreener/week)](https://pepy.tech/project/dexscreener)
 [![Downloads](https://static.pepy.tech/badge/dexscreener/month)](https://pepy.tech/project/dexscreener)
 [![Downloads](https://pepy.tech/badge/dexscreener)](https://pepy.tech/project/dexscreener)
