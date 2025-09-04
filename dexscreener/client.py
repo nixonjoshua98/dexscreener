@@ -1,13 +1,20 @@
-from .models import TokenPair, TokenInfo, OrderInfo
+from typing import Iterable, List, Optional
+
 from .http_client import HttpClient
-from typing import Optional, Iterable, List
-import json
+from .models import OrderInfo, TokenInfo, TokenPair
 
 
 class DexscreenerClient:
+    BASE_URL = "https://api.dexscreener.com"
+
     def __init__(self) -> None:
-        self._client_60rpm: HttpClient = HttpClient(60, 60, base_url="https://api.dexscreener.com")
-        self._client_300rpm: HttpClient = HttpClient(300, 60, base_url="https://api.dexscreener.com/latest")
+        self._client_60rpm: HttpClient = HttpClient(60, 60, base_url=self.BASE_URL)
+        self._client_300rpm_root: HttpClient = HttpClient(
+            300, 60, base_url=self.BASE_URL
+        )
+        self._client_300rpm: HttpClient = HttpClient(
+            300, 60, base_url=f"{self.BASE_URL}/latest"
+        )
 
     def get_latest_token_profiles(self) -> list[TokenInfo]:
         """
@@ -172,3 +179,73 @@ class DexscreenerClient:
         """
         resp = await self._client_300rpm.request_async("GET", f"dex/search/?q={search_query}")        
         return [TokenPair(**pair) for pair in resp.get("pairs", [])]
+
+    def get_pairs_by_token_addresses(
+        self, chain_id: str, token_list: Iterable[str]
+    ) -> list[TokenPair]:
+        """
+        Get token information for multiple tokens by chain and addresses
+
+        :param chain_id: Chain id eg: solana
+        :param token_list: Iterable of token addresses (up to 30) eg: [0x2170Ed0880ac9A755fd29B2688956BD959F933F8, 0x7BeA39867e4169DBe237d55C8242a8f2fcDcc387]
+        :return:
+            Response as list of TokenPair model
+        """
+        token_list_list = list(token_list)
+        if len(token_list_list) > 30:
+            raise ValueError("The maximum number of addresses allowed is 30.")
+
+        csv_addresses = ",".join(token_list_list)  # TODO: improve validation
+
+        resp = self._client_300rpm_root.request(
+            "GET", f"tokens/v1/{chain_id}/{csv_addresses}"
+        )
+        return [TokenPair(**pair) for pair in resp]
+
+    async def get_pairs_by_token_addresses_async(
+        self, chain_id: str, token_list: Iterable[str]
+    ) -> list[TokenPair]:
+        """
+        Async version of `get_pairs_by_token_addresses`
+
+        :param chain_id: Chain id eg: solana
+        :param token_list: Iterable of token addresses (up to 30) eg: [0x2170Ed0880ac9A755fd29B2688956BD959F933F8, 0x7BeA39867e4169DBe237d55C8242a8f2fcDcc387]
+        :return:
+            Response as list of TokenPair model
+        """
+        token_list_list = list(token_list)
+        if len(token_list_list) > 30:
+            raise ValueError("The maximum number of addresses allowed is 30.")
+
+        csv_addresses = ",".join(token_list_list)
+        resp = await self._client_300rpm_root.request_async(
+            "GET", f"tokens/v1/{chain_id}/{csv_addresses}"
+        )
+        return [TokenPair(**pair) for pair in resp]
+
+    def get_token_pairs_v1(self, chain_id: str, token_address: str) -> list[TokenPair]:
+        """
+        Get token pairs by token address
+
+        https://api.dexscreener.com/token-pairs/v1/{chainId}/{tokenAddress}
+
+        :param chain_id: Chain id eg: solana
+        :param token_address: Token address eg: JUPyiwrYJFskUPiHa7hkeR8VUtAeFoSYbKedZNsDvCN
+        :return:
+            Response as list of TokenPair model
+        """
+        resp = self._client_300rpm_root.request(
+            "GET", f"token-pairs/v1/{chain_id}/{token_address}"
+        )
+        return [TokenPair(**pair) for pair in resp]
+
+    async def get_token_pairs_v1_async(
+        self, chain_id: str, token_address: str
+    ) -> list[TokenPair]:
+        """
+        Async version of `get_token_pairs_v1`
+        """
+        resp = await self._client_300rpm_root.request_async(
+            "GET", f"token-pairs/v1/{chain_id}/{token_address}"
+        )
+        return [TokenPair(**pair) for pair in resp]
